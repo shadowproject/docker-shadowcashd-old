@@ -1,0 +1,36 @@
+#!/bin/bash
+
+set -e
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd "$SCRIPT_DIR/.."
+. etc/env
+
+START="\
+  sudo docker run \
+    -v $HOST_SHADOWCASHD_DATA_DIR:/shadowcashd/.shadowcoin \
+    -e SHADOWCASHD_RPC_IP=$SHADOWCASHD_RPC_IP \
+    -e SHADOWCASHD_RPC_PORT=$SHADOWCASHD_RPC_PORT \
+    -e SHADOWCASHD_RPC_USER=$SHADOWCASHD_RPC_USER \
+    -e SHADOWCASHD_RPC_PASSWORD=$SHADOWCASHD_RPC_PASSWORD \
+    -e SHADOWCASHD_CONFIG=$SHADOWCASHD_CONFIG \
+    $DOCKER_RUN_OPTS \
+"
+
+if [ "$1" = "serve" ]; then
+    START="$START -d -p $HOST_SHADOWCASHD_RPC_PORT:$SHADOWCASHD_RPC_PORT \
+    --volumes-from=$SHADOWCASHD_DATA_CONTAINER_NAME --name $SHADOWCASHD_NODE_CONTAINER_NAME $SHADOWCASHD_IMAGE_NAME shadowcashd"
+    set -x
+    exec $START
+fi
+if [ "$1" = "rpc" ]; then
+    # https://github.com/wsargent/docker-cheat-sheet --- Links
+    START="$START -d=false --rm --name $SHADOWCASHD_RPC_CONTAINER_NAME $SHADOWCASHD_IMAGE_NAME"
+    set -x
+    exec $START $@
+fi
+if [ "$1" = "init" ]; then
+    START="$START -d=false --name $SHADOWCASHD_DATA_CONTAINER_NAME $SHADOWCASHD_IMAGE_NAME init"
+    set -x
+    exec $START
+fi
+

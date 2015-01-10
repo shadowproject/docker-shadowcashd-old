@@ -1,0 +1,51 @@
+#!/bin/bash
+
+set -e
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd "$SCRIPT_DIR"
+. etc/env
+
+if [ "$1" = "" ] || [ "$1" = "--help" ]; then
+  cat <<EOF
+No command specified. Valid commands include:
+
+  * build: Build the docker container
+  * init: Initialize container
+  * start: Start paused container
+  * stop: Stop running container
+  * run: Run the container
+  * rpc: Execute shadowcashd RPC call (try> ./do rpc getinfo)
+
+See https://github.com/juhkov/docker-shadowcashd for details.
+EOF
+  exit 1
+fi
+
+# ----------------------------------
+
+if [ "$1" = "build" ]; then
+  set -x
+  docker build --rm -t $SHADOWCASHD_IMAGE_NAME shadowcashd
+elif [ "$1" == "rm" ]; then
+  set -x
+  docker rm $SHADOWCASHD_DATA_CONTAINER_NAME
+  docker rm $SHADOWCASHD_NODE_CONTAINER_NAME
+elif [ "$1" == "init" ]; then
+  cp bootstrap.dat $HOST_SHADOWCASHD_DATA_DIR/bootstrap.dat
+  set -x
+  bin/shadowcashdctl init
+elif [ "$1" == "run" ]; then
+  set -x
+  bin/shadowcashdctl serve
+elif [ "$1" == "start" ]; then
+  set -x
+  docker start $SHADOWCASHD_NODE_CONTAINER_NAME
+elif [ "$1" == "stop" ]; then
+  set -x
+  docker stop $SHADOWCASHD_NODE_CONTAINER_NAME
+elif [ "$1" == "rpc" ]; then
+  set -x
+  bin/shadowcashdctl $@
+else
+  echo "stupid user error."
+fi

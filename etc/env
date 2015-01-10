@@ -1,0 +1,32 @@
+# To override the environment variables here, add them to docker-shadowcashd/.env
+
+export DOCKER_RUN_OPTS=
+
+# IP address of current host
+if [ "$(uname)" == "Darwin" ]; then
+  export HOSTIP=$(/usr/bin/ifconfig | grep 'inet ' | grep -v '127.0.0.1' | head -n1 | awk '{print $2}')
+else
+  export HOSTIP=$(/usr/bin/ifconfig eth0 | grep "inet addr" | awk -F: '{print $2}' | awk '{print $1}')
+fi
+
+export HOST_DATA_DIR_PREFIX="/home/core/docker-shadowcashd"
+export HOST_SHADOWCASHD_DATA_DIR="$HOST_DATA_DIR_PREFIX/data"
+
+export HOST_SHADOWCASHD_RPC_PORT=51736
+export SHADOWCASHD_RPC_IP=10.133.244.23
+export SHADOWCASHD_RPC_PORT=51736
+
+export SHADOWCASHD_RPC_USER=
+export SHADOWCASHD_RPC_PASSWORD=
+export SHADOWCASHD_CONFIG=
+
+export SHADOWCASHD_IMAGE_NAME=ludx/shadowcashd
+export SHADOWCASHD_DATA_CONTAINER_NAME=shadowcashd-data
+export SHADOWCASHD_NODE_CONTAINER_NAME=shadowcashd-node
+export SHADOWCASHD_RPC_CONTAINER_NAME=shadowcashd-rpc
+
+
+# Overrides.
+if [ -e .env ]; then
+    source .env
+fi
