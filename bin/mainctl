@@ -14,9 +14,9 @@ No command specified. Valid commands include:
   * start: Start paused container
   * stop: Stop running container
   * run: Run the container
-  * rpc: Execute shadowcashd RPC call (try> ./do rpc getinfo)
+  * rpc: Execute shadowcashd RPC call (try> ./sdc rpc getinfo)
 
-See https://github.com/juhkov/docker-shadowcashd for details.
+See https://github.com/ShadowProject/docker-shadowcashd for details.
 EOF
   exit 1
 fi

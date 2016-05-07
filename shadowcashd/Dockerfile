@@ -13,7 +13,7 @@ ENV HOME /shadowcashd
 
 # check out github repo to build the latest version of shadowcashd from the sources
 WORKDIR /tmp
-RUN git clone https://github.com/SDCDev/shadowcoin.git /tmp/shadowcash
+RUN git clone https://github.com/shadowproject/shadow.git /tmp/shadowcash
 
 # build the shadowcoind
 WORKDIR /tmp/shadowcash/src

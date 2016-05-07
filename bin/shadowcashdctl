@@ -23,7 +23,6 @@ if [ "$1" = "serve" ]; then
     exec $START
 fi
 if [ "$1" = "rpc" ]; then
-    # https://github.com/wsargent/docker-cheat-sheet --- Links
     START="$START -d=false --rm --name $SHADOWCASHD_RPC_CONTAINER_NAME $SHADOWCASHD_IMAGE_NAME"
     set -x
     exec $START $@

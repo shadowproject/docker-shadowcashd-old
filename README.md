@@ -3,20 +3,20 @@
 ## Requirements
 
 * Docker installed and running
-  * [install Docker](https://www.docker.io/gettingstarted/#h_installation)
+  * [install Docker](https://docs.docker.com/engine/installation/)
 * Server with memory and some free space (tested on Digital Ocean 2GB/2cpu server running CoreOS)
 
 #### Howto
 
-I'd expect you to have Docker set up. If not, try CoreOS. I'd recommend getting a droplet from DigitalOcean. 
-(Here's $10 referral link: https://www.digitalocean.com/?refcode=55a75462fc46)
+I'd expect you to have Docker set up. If not, try CoreOS. I'd recommend getting a droplet from DigitalOcean.
+(Here's $10 referral link: https://www.digitalocean.com/?refcode=55a75462fc46).
 
 Here's some instructions: https://www.digitalocean.com/community/tutorials/how-to-set-up-a-coreos-cluster-on-digitalocean.
 
 After that:
 
     ssh -A core@awesome.com
-    git clone git@github.com:juhkov/docker-shadowcashd.git
+    git clone https://github.com/shadowproject/docker-shadowcashd.git
     cd docker-shadowcashd
     touch .env
     echo "export SHADOWCASHD_RPC_USER=some_user" >> .env
